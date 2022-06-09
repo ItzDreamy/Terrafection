@@ -1,21 +1,13 @@
 using Architecture.Scripts.Services.Input;
-using UnityEngine.Device;
+using Architecture.Scripts.StateMachines;
 
 namespace Architecture.Scripts.Bootstrappers {
     public class Game {
         public static IInputService InputService;
-        
-        public Game() {
-            RegisterInputService();
-        }
+        public readonly GameStateMachine StateMachine;
 
-        private static void RegisterInputService() {
-            if (Application.isMobilePlatform) {
-                InputService = new MobileInputService();
-            }
-            else {
-                InputService = new StandaloneInputService();
-            }
+        public Game(ICoroutineRunner coroutineRunner) {
+            StateMachine = new GameStateMachine(new SceneLoader(coroutineRunner));
         }
     }
 }
