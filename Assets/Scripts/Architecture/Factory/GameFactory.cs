@@ -20,6 +20,8 @@ namespace Architecture.Factory {
             InstantiateRegistered(AssetPath.HudPath);
         }
 
+        public GameObject CreateTile(Vector2 at) => InstantiateRegistered(at, AssetPath.TilePath);
+
         public void Cleanup() {
             ProgressReaders.Clear();
             ProgressWriters.Clear();

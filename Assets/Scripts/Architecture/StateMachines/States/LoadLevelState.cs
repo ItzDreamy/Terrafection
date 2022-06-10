@@ -1,5 +1,4 @@
 ﻿using Architecture.Factory;
-using Architecture.Services.PersistentProgress;
 
 namespace Architecture.StateMachines.States {
     public class LoadLevelState : IState {

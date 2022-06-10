@@ -17,7 +17,7 @@ namespace Architecture.StateMachines {
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, services.Single<IGameFactory>()),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistantProgressService>(),
                     services.Single<ISaveLoadService>()),
-                [typeof(WorldGenerationState)] = new WorldGenerationState(this),
+                [typeof(WorldGenerationState)] = new WorldGenerationState(this, services.Single<IGameFactory>()),
                 [typeof(InitializationPlayerState)] = new InitializationPlayerState(this,
                     services.Single<IGameFactory>(), services.Single<IPersistantProgressService>()),
                 [typeof(GameLoopState)] = new GameLoopState(this)
