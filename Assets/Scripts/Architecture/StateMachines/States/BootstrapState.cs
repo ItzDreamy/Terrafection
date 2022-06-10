@@ -29,7 +29,7 @@ namespace Architecture.StateMachines.States {
         }
 
         private void EnterLoadLevel() {
-            _stateMachine.Enter<LoadProgressState>();
+            _stateMachine.Enter<LoadLevelState>();
         }
 
         private void RegisterServices() {

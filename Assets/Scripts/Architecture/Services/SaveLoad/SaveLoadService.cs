@@ -17,10 +17,7 @@ namespace Architecture.Services.SaveLoad {
             foreach (var writer in _gameFactory.ProgressWriters) {
                 writer.UpdateProgress(_progressService.Progress);
             }
-
-            var json = _progressService.Progress.ToJson();
-            Debug.Log(json);
-            PlayerPrefs.SetString(worldName, json);
+            PlayerPrefs.SetString(worldName, _progressService.Progress.ToJson());
         }
 
         public PlayerProgress LoadProgress(string worldName) {

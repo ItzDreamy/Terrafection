@@ -1,5 +1,4 @@
-﻿using System;
-using Architecture.Services;
+﻿using Architecture.Services;
 using Architecture.Services.Input;
 using Architecture.Services.PersistentProgress;
 using Architecture.Services.SaveLoad;

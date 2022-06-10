@@ -20,7 +20,7 @@ namespace Architecture.StateMachines.States {
 
         public void Enter() {
             LoadProgressOrInitNew();
-            _stateMachine.Enter<LoadLevelState>();
+            _stateMachine.Enter<InitializationPlayerState>();
         }
 
         private void LoadProgressOrInitNew() {
