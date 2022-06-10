@@ -1,34 +1,30 @@
-﻿using UnityEngine;
+﻿using Architecture.Scripts.Factory;
+using UnityEngine;
 
 namespace Architecture.Scripts.StateMachines.States {
     public class LoadLevelState : IPayloadedState<string> {
-        private const string Hud = "Hud/Hud";
-        private readonly GameStateMachine _stateMachine;
+        private readonly IGameFactory _gameFactory;
         private readonly SceneLoader _sceneLoader;
+        private readonly GameStateMachine _stateMachine;
 
-        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader) {
+        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, IGameFactory gameFactory) {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _gameFactory = gameFactory;
         }
 
-        public void Enter(string sceneName) => _sceneLoader.Load(sceneName, onLoaded: OnLoaded);
+        public void Enter(string sceneName) {
+            _sceneLoader.Load(sceneName, OnLoaded);
+        }
 
         public void Exit() {
         }
 
         private void OnLoaded() {
-            //TODO: Spawn player
-            Instantiate(Hud);
-        }
+            var hero = _gameFactory.CreateHero(Vector2.zero);
+            _gameFactory.CreateHud();
 
-        private static GameObject Instantiate(string path) {
-            var prefab = Resources.Load<GameObject>(path);
-            return Object.Instantiate(prefab);
-        }
-        
-        private static GameObject Instantiate(string path, Vector2 at) {
-            var prefab = Resources.Load<GameObject>(path);
-            return Object.Instantiate(prefab, at, Quaternion.identity);
+            _stateMachine.Enter<GameLoopState>();
         }
     }
 }

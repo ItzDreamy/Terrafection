@@ -1,31 +1,44 @@
-﻿using Architecture.Scripts.Bootstrappers;
+﻿using Architecture.Scripts.AssetManagement;
+using Architecture.Scripts.Factory;
+using Architecture.Scripts.Services;
 using Architecture.Scripts.Services.Input;
 using UnityEngine.Device;
 
 namespace Architecture.Scripts.StateMachines.States {
     public class BootstrapState : IState {
         private const string Boot = "Boot";
-        private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly AllServices _services;
+        private readonly GameStateMachine _stateMachine;
 
-        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader) {
+        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services) {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _services = services;
+
+            RegisterServices();
         }
 
         public void Enter() {
-            RegisterServices();
-            _sceneLoader.Load(Boot, onLoaded: EnterLoadLevel);
+            _sceneLoader.Load(Boot, EnterLoadLevel);
         }
-
-        private void EnterLoadLevel() => _stateMachine.Enter<LoadLevelState, string>("Main");
 
         public void Exit() {
         }
 
-        private void RegisterServices() => Game.InputService = RegisterInputService();
+        private void EnterLoadLevel() {
+            _stateMachine.Enter<LoadLevelState, string>("Main");
+        }
 
-        private static IInputService RegisterInputService() =>
-            Application.isMobilePlatform ? new MobileInputService() : new StandaloneInputService();
+        private void RegisterServices() {
+            _services.RegisterSingle(InputService());
+            _services.RegisterSingle<IAssetProvider>(new AssetProvider());
+            _services.RegisterSingle<IGameFactory>(
+                new GameFactory(_services.Single<IAssetProvider>()));
+        }
+
+        private static IInputService InputService() {
+            return Application.isMobilePlatform ? new MobileInputService() : new StandaloneInputService();
+        }
     }
 }

@@ -6,11 +6,13 @@ namespace Architecture.Scripts.Services.Input {
             get {
                 var axis = DefaultInputAxis();
                 if (axis == Vector2.zero) axis = MobileAxis();
-                
+
                 return axis;
             }
         }
 
-        private Vector2 MobileAxis() => new Vector2(0, 0);
+        private Vector2 MobileAxis() {
+            return new(0, 0);
+        }
     }
 }

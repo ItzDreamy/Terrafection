@@ -6,7 +6,8 @@ namespace Architecture.Scripts.Services.Input {
         protected const string Vertical = "Vertical";
         public abstract Vector2 Axis { get; }
 
-        protected static Vector2 DefaultInputAxis() =>
-            new Vector2(UnityEngine.Input.GetAxis(Horizontal), UnityEngine.Input.GetAxis(Vertical));
+        protected static Vector2 DefaultInputAxis() {
+            return new(UnityEngine.Input.GetAxis(Horizontal), UnityEngine.Input.GetAxis(Vertical));
+        }
     }
 }

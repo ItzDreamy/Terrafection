@@ -1,5 +1,4 @@
-﻿using Architecture.Scripts.StateMachines;
-using Architecture.Scripts.StateMachines.States;
+﻿using Architecture.Scripts.StateMachines.States;
 using UnityEngine;
 
 namespace Architecture.Scripts.Bootstrappers {
