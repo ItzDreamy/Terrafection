@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Architecture.Factory;
 using Architecture.Services;
+using Architecture.Services.PersistentProgress;
+using Architecture.Services.SaveLoad;
 using Architecture.StateMachines.States;
 
 namespace Architecture.StateMachines {
@@ -12,7 +14,10 @@ namespace Architecture.StateMachines {
         public GameStateMachine(SceneLoader sceneLoader, AllServices services) {
             _states = new Dictionary<Type, IExitableState> {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, services.Single<IGameFactory>()),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, services.Single<IGameFactory>(),
+                    services.Single<IPersistantProgressService>()),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistantProgressService>(),
+                    services.Single<ISaveLoadService>()),
                 [typeof(GameLoopState)] = new GameLoopState(this)
             };
         }

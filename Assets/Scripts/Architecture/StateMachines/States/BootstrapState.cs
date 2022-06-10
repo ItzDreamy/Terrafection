@@ -3,6 +3,7 @@ using Architecture.Factory;
 using Architecture.Services;
 using Architecture.Services.Input;
 using Architecture.Services.PersistentProgress;
+using Architecture.Services.SaveLoad;
 using UnityEngine.Device;
 
 namespace Architecture.StateMachines.States {
@@ -28,7 +29,7 @@ namespace Architecture.StateMachines.States {
         }
 
         private void EnterLoadLevel() {
-            _stateMachine.Enter<LoadLevelState, string>("Main");
+            _stateMachine.Enter<LoadProgressState>();
         }
 
         private void RegisterServices() {
@@ -37,6 +38,8 @@ namespace Architecture.StateMachines.States {
             _services.RegisterSingle<IPersistantProgressService>(new PersistantProgressService());
             _services.RegisterSingle<IGameFactory>(
                 new GameFactory(_services.Single<IAssetProvider>()));
+            _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IGameFactory>(),
+                _services.Single<IPersistantProgressService>()));
         }
 
         private static IInputService InputService() {
