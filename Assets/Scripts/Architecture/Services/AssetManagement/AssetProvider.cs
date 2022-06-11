@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Architecture.AssetManagement {
+namespace Architecture.Services.AssetManagement {
     public class AssetProvider : IAssetProvider {
         public GameObject Instantiate(string path) {
             var prefab = Resources.Load<GameObject>(path);
@@ -10,6 +10,11 @@ namespace Architecture.AssetManagement {
         public GameObject Instantiate(string path, Vector2 at) {
             var prefab = Resources.Load<GameObject>(path);
             return Object.Instantiate(prefab, at, Quaternion.identity);
+        }
+        
+        public GameObject Instantiate(string path, Vector2 at, Transform parent) {
+            var prefab = Resources.Load<GameObject>(path);
+            return Object.Instantiate(prefab, at, Quaternion.identity, parent);
         }
     }
 }

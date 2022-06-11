@@ -1,6 +1,6 @@
 ﻿using Architecture.Services.PersistentProgress;
 using Architecture.Services.SaveLoad;
-using Data;
+using Data.Player;
 
 namespace Architecture.StateMachines.States {
     public class LoadProgressState : IState {
@@ -20,7 +20,7 @@ namespace Architecture.StateMachines.States {
 
         public void Enter() {
             LoadProgressOrInitNew();
-            _stateMachine.Enter<InitializationPlayerState>();
+            _stateMachine.Enter<WorldGenerationState>();
         }
 
         private void LoadProgressOrInitNew() {

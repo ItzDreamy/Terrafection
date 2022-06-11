@@ -3,6 +3,7 @@ using Architecture.Services.Input;
 using Architecture.Services.PersistentProgress;
 using Architecture.Services.SaveLoad;
 using Data;
+using Data.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,23 +27,19 @@ namespace Hero {
         public void UpdateProgress(PlayerProgress progress) {
             progress.WorldData.PositionOnLevel =
                 new PositionOnLevel(transform.position.AsVectorData());
+            
+            Debug.Log("Player position saved.");
         }
 
         public void LoadProgress(PlayerProgress progress) {
-            if (CurrentLevel() == progress.WorldData.Name) {
-                Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
-                if (savedPosition != null) {
-                    Warp(savedPosition);
-                }
+            Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
+            if (savedPosition != null) {
+                Warp(savedPosition);
             }
         }
 
         private void Warp(Vector3Data savedPosition) {
             transform.position = savedPosition.AsUnityVector();
-        }
-
-        private static string CurrentLevel() {
-            return SceneManager.GetActiveScene().name;
         }
 
         private void OnApplicationQuit() {

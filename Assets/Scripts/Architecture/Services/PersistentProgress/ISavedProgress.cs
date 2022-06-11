@@ -1,4 +1,4 @@
-﻿using Data;
+﻿using Data.Player;
 
 namespace Architecture.Services.PersistentProgress {
     public interface ISavedProgressReader {

@@ -1,6 +1,7 @@
 ﻿using Architecture.Factory;
 using Architecture.Services.PersistentProgress;
 using Data;
+using Data.Player;
 using UnityEngine;
 
 namespace Architecture.Services.SaveLoad {

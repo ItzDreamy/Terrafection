@@ -1,0 +1,8 @@
+﻿{
+  "SurfaceValue": 0.3,
+  "WorldSize": 500,
+  "CaveFrequency": 0.065,
+  "TerrainFrequency": 0.04,
+  "HeightMultiplier": 25,
+  "HeightAddition": 25
+}

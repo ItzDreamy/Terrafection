@@ -1,9 +1,10 @@
-﻿using Architecture.AssetManagement;
-using Architecture.Factory;
+﻿using Architecture.Factory;
 using Architecture.Services;
+using Architecture.Services.AssetManagement;
 using Architecture.Services.Input;
 using Architecture.Services.PersistentProgress;
 using Architecture.Services.SaveLoad;
+using Architecture.Services.WorldGeneration;
 using UnityEngine.Device;
 
 namespace Architecture.StateMachines.States {
@@ -40,6 +41,7 @@ namespace Architecture.StateMachines.States {
                 new GameFactory(_services.Single<IAssetProvider>()));
             _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IGameFactory>(),
                 _services.Single<IPersistantProgressService>()));
+            _services.RegisterSingle<IWorldConfigProvider>(new WorldConfigProvider());
         }
 
         private static IInputService InputService() {

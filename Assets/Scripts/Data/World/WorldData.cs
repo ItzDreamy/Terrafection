@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace Data {
+namespace Data.World {
     [Serializable]
     public class WorldData {
         public string Name;
         public PositionOnLevel PositionOnLevel;
+        public List<Vector3Data> BlocksPositions;
 
         public WorldData(string worldName) {
             Name = worldName;

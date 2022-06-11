@@ -1,6 +1,7 @@
 using System;
+using Data.World;
 
-namespace Data {
+namespace Data.Player {
     [Serializable]
     public class PlayerProgress {
         public WorldData WorldData;

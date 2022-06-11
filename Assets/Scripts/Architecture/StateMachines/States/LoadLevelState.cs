@@ -21,7 +21,7 @@ namespace Architecture.StateMachines.States {
         }
 
         private void OnLoaded() {
-            _stateMachine.Enter<WorldGenerationState>();
+            _stateMachine.Enter<LoadProgressState>();
         }
     }
 }
