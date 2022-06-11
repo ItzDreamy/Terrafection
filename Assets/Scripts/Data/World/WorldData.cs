@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Data.Player;
 
 namespace Data.World {
     [Serializable]

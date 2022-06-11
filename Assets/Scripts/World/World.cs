@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Architecture.Factory;
-using Architecture.Services;
-using Architecture.Services.PersistentProgress;
 using Data;
 using Data.Player;
+using Infrastructure.Factory;
+using Infrastructure.Services;
+using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 
 namespace World {

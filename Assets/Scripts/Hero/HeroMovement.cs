@@ -1,11 +1,10 @@
-﻿using Architecture.Services;
-using Architecture.Services.Input;
-using Architecture.Services.PersistentProgress;
-using Architecture.Services.SaveLoad;
-using Data;
+﻿using Data;
 using Data.Player;
+using Infrastructure.Services;
+using Infrastructure.Services.Input;
+using Infrastructure.Services.PersistentProgress;
+using Infrastructure.Services.SaveLoad;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Hero {
     public class HeroMovement : MonoBehaviour, ISavedProgress {

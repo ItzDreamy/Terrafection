@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Data {
+namespace Data.Player {
     [Serializable]
     public class PositionOnLevel {
         public Vector3Data Position;
