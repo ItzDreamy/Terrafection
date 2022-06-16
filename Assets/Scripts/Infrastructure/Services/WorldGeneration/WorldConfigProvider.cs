@@ -6,4 +6,4 @@ namespace Infrastructure.Services.WorldGeneration {
         public WorldConfig Config =>
             Resources.Load<WorldConfig>("StaticData/Configs/GenerationConfig");
     }
-}
+} 
