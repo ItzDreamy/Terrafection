@@ -1,4 +1,4 @@
-﻿using Configs;
+﻿using StaticData.Configs;
 
 namespace Infrastructure.Services.WorldGeneration {
     public interface IWorldConfigProvider : IService {

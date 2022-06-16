@@ -1,7 +1,7 @@
-﻿using Configs;
-using Infrastructure.Factory;
+﻿using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.WorldGeneration;
+using StaticData.Configs;
 using UnityEngine;
 
 namespace Infrastructure.StateMachines.States {
