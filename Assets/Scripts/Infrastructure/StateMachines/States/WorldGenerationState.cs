@@ -2,6 +2,7 @@
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.WorldGeneration;
 using StaticData.Configs;
+using StaticData.Generation;
 using UnityEngine;
 
 namespace Infrastructure.StateMachines.States {
@@ -27,7 +28,10 @@ namespace Infrastructure.StateMachines.States {
 
         public void Enter() {
             _seed = Random.Range(-10000, 10000);
+            
+            CreateTerrainParent();
             GenerateNewIfNotExists();
+            
             _stateMachine.Enter<InitializationPlayerState>();
         }
 
@@ -35,12 +39,15 @@ namespace Infrastructure.StateMachines.States {
         }
 
         private void GenerateNewIfNotExists() {
-            _terrainParent = _gameFactory.CreateWorldParent().transform;
-            if (_progressService.Progress.WorldData.BlocksPositions != null) {
+            if (_progressService.Progress.WorldData.Blocks != null) {
                 return;
             }
             GenerateTexture();
             GenerateTerrain();
+        }
+
+        private void CreateTerrainParent() {
+            _terrainParent = _gameFactory.CreateWorldParent().transform;
         }
 
         private void GenerateTexture() {
@@ -65,7 +72,7 @@ namespace Infrastructure.StateMachines.States {
                 for (int y = 0; y < height; y++) {
                     if (_noiseTexture2D.GetPixel(x, y).r > _config.SurfaceValue) {
                         var position = new Vector2(x + 0.5f, y + 0.5f);
-                        var tile = _gameFactory.CreateTile(position, _terrainParent);
+                        var tile = _gameFactory.CreateTile(BlockTypeId.Dirt, position, _terrainParent);
                     }
                 }
             }

@@ -7,7 +7,7 @@ namespace Data.World {
     public class WorldData {
         public string Name;
         public PositionOnLevel PositionOnLevel;
-        public List<Vector3Data> BlocksPositions;
+        public List<Block> Blocks;
 
         public WorldData(string worldName) {
             Name = worldName;

@@ -1,18 +1,24 @@
 ﻿using System.Collections.Generic;
+using Data;
+using Data.World;
 using Infrastructure.Services.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
+using Infrastructure.Services.WorldGeneration;
+using StaticData.Generation;
 using UnityEngine;
 
 namespace Infrastructure.Factory {
     public class GameFactory : IGameFactory {
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
-
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
+        public List<Block> Blocks { get; } = new List<Block>();
 
         private readonly IAssetProvider _assets;
+        private readonly IBlocksDataProvider _blocksDataProvider;
 
-        public GameFactory(IAssetProvider assets) {
+        public GameFactory(IAssetProvider assets, IBlocksDataProvider blocksDataProvider) {
             _assets = assets;
+            _blocksDataProvider = blocksDataProvider;
         }
 
         public GameObject CreateWorldParent() {
@@ -22,17 +28,28 @@ namespace Infrastructure.Factory {
             return obj;
         }
 
-        public GameObject CreateHero(Vector2 at) => InstantiateRegistered(at, AssetPath.HeroPath);
+        public GameObject CreateHero(Vector2 at) =>
+            InstantiateRegistered(at, AssetPath.HeroPath);
 
         public void CreateHud() {
             InstantiateRegistered(AssetPath.HudPath);
         }
 
-        public GameObject CreateTile(Vector2 at, Transform parent) => InstantiateRegistered(at, parent, AssetPath.TilePath);
+        public GameObject CreateTile(BlockTypeId typeId, Vector3 at, Transform parent) {
+            BlockData blockData = _blocksDataProvider.GetBlockData(typeId);
+            var block = new Block {
+                Position = at.AsVectorData(),
+                TypeId = typeId
+            };
+            Blocks.Add(block);
+
+            return Object.Instantiate(blockData.BlockPrefab, at, Quaternion.identity, parent);
+        }
 
         public void Cleanup() {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
+            Blocks.Clear();
         }
 
         private GameObject InstantiateRegistered(Vector2 at, string prefabPath) {
@@ -40,7 +57,7 @@ namespace Infrastructure.Factory {
             RegisterProgressWatchers(gameObject);
             return gameObject;
         }
-        
+
         private GameObject InstantiateRegistered(Vector2 at, Transform parent, string prefabPath) {
             var gameObject = _assets.Instantiate(prefabPath, at, parent);
             RegisterProgressWatchers(gameObject);

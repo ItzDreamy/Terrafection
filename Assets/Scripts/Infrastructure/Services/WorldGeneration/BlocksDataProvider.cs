@@ -7,11 +7,10 @@ namespace Infrastructure.Services.WorldGeneration {
     public class BlocksDataProvider : IBlocksDataProvider {
         private Dictionary<BlockTypeId, BlockData> _blocks;
 
-        public void LoadBlocks() {
+        public void LoadBlocks() =>
             _blocks = Resources
-                .LoadAll<BlockData>("StaticData/Generation")
+                .LoadAll<BlockData>("StaticData/Blocks")
                 .ToDictionary(x => x.BlockTypeId, x => x);
-        }
 
         public BlockData GetBlockData(BlockTypeId id) =>
             _blocks.TryGetValue(id, out BlockData blockData) ? blockData : null;

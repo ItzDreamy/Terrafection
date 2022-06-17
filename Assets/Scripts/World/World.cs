@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using Data;
 using Data.Player;
+using Data.World;
 using Infrastructure.Factory;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
+using StaticData.Generation;
 using UnityEngine;
 
 namespace World {
@@ -15,22 +17,23 @@ namespace World {
         }
 
         public void LoadProgress(PlayerProgress progress) {
-            var blocksPositions = progress.WorldData.BlocksPositions;
-            if (blocksPositions == null) {
+            var blocks = progress.WorldData.Blocks;
+            if (blocks == null) {
                 return;
             }
-            
-            foreach (var blockPosition in blocksPositions) {
-                _gameFactory.CreateTile(blockPosition.AsUnityVector(), transform);
+
+            foreach (var block in blocks) {
+                _gameFactory
+                    .CreateTile(block.TypeId, block.Position.AsUnityVector(), transform);
             }
 
             Debug.Log("Saved world loaded.");
         }
 
         public void UpdateProgress(PlayerProgress progress) {
-            progress.WorldData.BlocksPositions = new List<Vector3Data>();
-            foreach (Transform child in transform) {
-                progress.WorldData.BlocksPositions.Add(child.position.AsVectorData());
+            progress.WorldData.Blocks = new List<Block>();
+            foreach (Block block in _gameFactory.Blocks) {
+                progress.WorldData.Blocks.Add(block);
             }
 
             Debug.Log("World saved.");
