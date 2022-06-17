@@ -1,9 +1,10 @@
-﻿using Infrastructure.Factory;
+﻿using CameraLogic;
+using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 
 namespace Infrastructure.StateMachines.States {
-    public class InitializationPlayerState : IState {
+    public class InitializationPlayerState : IPayloadedState<Vector2> {
         private readonly GameStateMachine _gameStateMachine;
         private readonly IGameFactory _gameFactory;
         private readonly IPersistantProgressService _progressService;
@@ -15,13 +16,13 @@ namespace Infrastructure.StateMachines.States {
             _progressService = progressService;
         }
 
-        public void Exit() {
-        }
-
-        public void Enter() {
-            InitGameWorld();
+        public void Enter(Vector2 spawnPosition) {
+            InitGameWorld(spawnPosition);
             InformProgressReaders();
             _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        public void Exit() {
         }
 
         private void InformProgressReaders() {
@@ -30,9 +31,20 @@ namespace Infrastructure.StateMachines.States {
             }
         }
 
-        private void InitGameWorld() {
-            var hero = _gameFactory.CreateHero(Vector2.zero);
+        private void InitGameWorld(Vector2 spawnPosition) {
+            GameObject hero = SpawnPlayer(spawnPosition);
+            CameraFollow(hero);
+            InitHud(hero);
+        }
+
+        private void InitHud(GameObject hero) {
             _gameFactory.CreateHud();
         }
+
+        private GameObject SpawnPlayer(Vector2 spawnPosition) =>
+            _gameFactory.CreateHero(spawnPosition);
+
+        private void CameraFollow(GameObject hero) =>
+            Camera.main.GetComponent<CameraFollow>().Follow(hero);
     }
 }

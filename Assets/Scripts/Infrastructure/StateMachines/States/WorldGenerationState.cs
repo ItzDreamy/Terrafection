@@ -18,6 +18,8 @@ namespace Infrastructure.StateMachines.States {
         private Texture2D _noiseTexture2D;
         private GameObject[] _chunks;
 
+        private Vector2 _spawnPosition;
+
         public WorldGenerationState(GameStateMachine stateMachine, IGameFactory gameFactory,
             IWorldConfigProvider configProvider, IPersistantProgressService progressService) {
             _stateMachine = stateMachine;
@@ -31,20 +33,14 @@ namespace Infrastructure.StateMachines.States {
             _seed = Random.Range(-10000, 10000);
 
             _terrainParent = CreateTerrainParent();
-            if (_progressService.Progress.WorldData.Chunks != null) {
-                LoadWorld();
-            }
-            else {
+            if (_progressService.Progress.WorldData.Chunks == null) {
                 GenerateNewWorld();
             }
-
-            _stateMachine.Enter<InitializationPlayerState>();
+            
+            _stateMachine.Enter<InitializationPlayerState, Vector2>(_spawnPosition);
         }
 
         public void Exit() {
-        }
-
-        private void LoadWorld() {
         }
 
         private void GenerateNewWorld() {
@@ -73,6 +69,11 @@ namespace Infrastructure.StateMachines.States {
         private void GenerateTerrain() {
             for (int x = 0; x < _config.WorldSize; x++) {
                 var height = CalculateHeight(x);
+
+                if (x == _config.WorldSize / 2) {
+                    _spawnPosition = new Vector2(x, height + 1);
+                }
+
                 for (int y = 0; y < height; y++) {
                     if (IsNotCave(x, y)) {
                         CreateBlock(x, y, SwitchBlockType(y, height));
