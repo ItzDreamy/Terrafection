@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GenerationConfig
   m_EditorClassIdentifier: 
   SurfaceValue: 0.225
-  WorldSize: 100
+  WorldSize: 500
   CaveFrequency: 0.08
   TerrainFrequency: 0.04
   HeightMultiplier: 25

@@ -35,6 +35,7 @@ namespace Infrastructure.StateMachines.States {
 
         private void RegisterServices() {
             RegisterBlocksData();
+            RegisterGenerationConfig();
             _services.RegisterSingle(InputService());
             _services.RegisterSingle<IAssetProvider>(new AssetProvider());
             _services.RegisterSingle<IPersistantProgressService>(new PersistantProgressService());
@@ -42,9 +43,14 @@ namespace Infrastructure.StateMachines.States {
                 new GameFactory(_services.Single<IAssetProvider>(), _services.Single<IBlocksDataProvider>()));
             _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IGameFactory>(),
                 _services.Single<IPersistantProgressService>()));
-            _services.RegisterSingle<IWorldConfigProvider>(new WorldConfigProvider());
         }
 
+        private void RegisterGenerationConfig() {
+            IWorldConfigProvider worldConfigProvider = new WorldConfigProvider();
+            worldConfigProvider.LoadConfig();
+            _services.RegisterSingle<IWorldConfigProvider>(worldConfigProvider);
+        }
+        
         private void RegisterBlocksData() {
             IBlocksDataProvider blocksData = new BlocksDataProvider();
             blocksData.LoadBlocks();

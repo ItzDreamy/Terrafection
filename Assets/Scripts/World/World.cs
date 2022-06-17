@@ -5,7 +5,6 @@ using Data.World;
 using Infrastructure.Factory;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
-using StaticData.Generation;
 using UnityEngine;
 
 namespace World {
@@ -17,23 +16,29 @@ namespace World {
         }
 
         public void LoadProgress(PlayerProgress progress) {
-            var blocks = progress.WorldData.Blocks;
-            if (blocks == null) {
+            var chunks = progress.WorldData.Chunks;
+            if (chunks == null) {
                 return;
             }
 
-            foreach (var block in blocks) {
-                _gameFactory
-                    .CreateTile(block.TypeId, block.Position.AsUnityVector(), transform);
+            for (var i = 0; i < chunks.Count; i++) {
+                var newChunk = _gameFactory.CreateChunk(i, chunks[i].Blocks.Count, transform);
+                Transform chunkTransform = newChunk.transform;
+
+                foreach (var block in chunks[i].Blocks) {
+                    _gameFactory
+                        .CreateTile(block.TypeId, block.Position.AsUnityVector(), i, chunkTransform);
+                }
             }
 
             Debug.Log("Saved world loaded.");
         }
 
+
         public void UpdateProgress(PlayerProgress progress) {
-            progress.WorldData.Blocks = new List<Block>();
-            foreach (Block block in _gameFactory.Blocks) {
-                progress.WorldData.Blocks.Add(block);
+            progress.WorldData.Chunks = new List<Chunk>();
+            foreach (var chunk in _gameFactory.Chunks) {
+                progress.WorldData.Chunks.Add(chunk);
             }
 
             Debug.Log("World saved.");

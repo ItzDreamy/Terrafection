@@ -9,11 +9,13 @@ namespace Infrastructure.Factory {
     public interface IGameFactory : IService {
         GameObject CreateHero(Vector2 at);
         void CreateHud();
-        GameObject CreateTile(BlockTypeId typeId, Vector3 at, Transform parent);
+        GameObject CreateTile(BlockTypeId typeId, Vector3 at, int chunkIndex, Transform parent);
+        GameObject CreateChunk(int index, Transform parent);
+        GameObject CreateChunk(int index, int blocksCount, Transform parent);
         GameObject CreateWorldParent();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
-        List<Block> Blocks { get; }
+        List<Chunk> Chunks { get; }
         void Cleanup();
     }
 }

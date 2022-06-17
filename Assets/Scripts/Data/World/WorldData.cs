@@ -7,7 +7,7 @@ namespace Data.World {
     public class WorldData {
         public string Name;
         public PositionOnLevel PositionOnLevel;
-        public List<Block> Blocks;
+        public List<Chunk> Chunks;
 
         public WorldData(string worldName) {
             Name = worldName;

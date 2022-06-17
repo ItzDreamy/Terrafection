@@ -11,7 +11,7 @@ namespace Infrastructure.Factory {
     public class GameFactory : IGameFactory {
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
-        public List<Block> Blocks { get; } = new List<Block>();
+        public List<Chunk> Chunks { get; } = new List<Chunk>();
 
         private readonly IAssetProvider _assets;
         private readonly IBlocksDataProvider _blocksDataProvider;
@@ -35,21 +35,46 @@ namespace Infrastructure.Factory {
             InstantiateRegistered(AssetPath.HudPath);
         }
 
-        public GameObject CreateTile(BlockTypeId typeId, Vector3 at, Transform parent) {
+        public GameObject CreateChunk(int index, int blocksCount, Transform parent) {
+            GameObject newChunk = new GameObject(name: index.ToString()) {
+                transform = {
+                    parent = parent
+                }
+            };
+            Chunks.Add(new Chunk {
+                Blocks = new List<Block>(blocksCount)
+            });
+
+            return newChunk;
+        }
+
+        public GameObject CreateChunk(int index, Transform parent) {
+            GameObject newChunk = new GameObject(name: index.ToString()) {
+                transform = {
+                    parent = parent
+                }
+            };
+            Chunks.Add(new Chunk {
+                Blocks = new List<Block>()
+            });
+
+            return newChunk;
+        }
+
+        public GameObject CreateTile(BlockTypeId typeId, Vector3 at, int chunkIndex, Transform parent) {
             BlockData blockData = _blocksDataProvider.GetBlockData(typeId);
             var block = new Block {
                 Position = at.AsVectorData(),
                 TypeId = typeId
             };
-            Blocks.Add(block);
-
+            Chunks[chunkIndex].Blocks.Add(block);
             return Object.Instantiate(blockData.BlockPrefab, at, Quaternion.identity, parent);
         }
 
         public void Cleanup() {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
-            Blocks.Clear();
+            Chunks.Clear();
         }
 
         private GameObject InstantiateRegistered(Vector2 at, string prefabPath) {

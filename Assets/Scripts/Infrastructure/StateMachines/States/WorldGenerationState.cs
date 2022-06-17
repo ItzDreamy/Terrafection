@@ -16,6 +16,7 @@ namespace Infrastructure.StateMachines.States {
 
         private float _seed;
         private Texture2D _noiseTexture2D;
+        private GameObject[] _chunks;
 
         public WorldGenerationState(GameStateMachine stateMachine, IGameFactory gameFactory,
             IWorldConfigProvider configProvider, IPersistantProgressService progressService) {
@@ -29,8 +30,13 @@ namespace Infrastructure.StateMachines.States {
         public void Enter() {
             _seed = Random.Range(-10000, 10000);
 
-            CreateTerrainParent();
-            GenerateNewIfNotExists();
+            _terrainParent = CreateTerrainParent();
+            if (_progressService.Progress.WorldData.Chunks != null) {
+                LoadWorld();
+            }
+            else {
+                GenerateNewWorld();
+            }
 
             _stateMachine.Enter<InitializationPlayerState>();
         }
@@ -38,17 +44,17 @@ namespace Infrastructure.StateMachines.States {
         public void Exit() {
         }
 
-        private void GenerateNewIfNotExists() {
-            if (_progressService.Progress.WorldData.Blocks != null) {
-                return;
-            }
+        private void LoadWorld() {
+        }
 
+        private void GenerateNewWorld() {
+            CreateChunks();
             GenerateTexture();
             GenerateTerrain();
         }
 
-        private void CreateTerrainParent() =>
-            _terrainParent = _gameFactory.CreateWorldParent().transform;
+        private Transform CreateTerrainParent() =>
+            _gameFactory.CreateWorldParent().transform;
 
         private void GenerateTexture() {
             _noiseTexture2D = new Texture2D(_config.WorldSize, _config.WorldSize);
@@ -69,14 +75,27 @@ namespace Infrastructure.StateMachines.States {
                 var height = CalculateHeight(x);
                 for (int y = 0; y < height; y++) {
                     if (IsNotCave(x, y)) {
-                        CreateBlock(new Vector2(x + 0.5f, y + 0.5f), SwitchBlockType(y, height));
+                        CreateBlock(x, y, SwitchBlockType(y, height));
                     }
                 }
             }
         }
 
-        private void CreateBlock(Vector2 position, BlockTypeId typeId) =>
-            _gameFactory.CreateTile(typeId, position, _terrainParent);
+        private void CreateChunks() {
+            int chunksCount = (int) Mathf.Ceil((float) _config.WorldSize / _config.ChunkSize);
+            _chunks = new GameObject[chunksCount];
+
+            for (int i = 0; i < chunksCount; i++) {
+                var newChunk = _gameFactory.CreateChunk(i, _terrainParent);
+                _chunks[i] = newChunk;
+            }
+        }
+
+        private void CreateBlock(int x, int y, BlockTypeId typeId) {
+            int chunkCoord = Mathf.RoundToInt(x / _config.ChunkSize) * _config.ChunkSize;
+            chunkCoord /= _config.ChunkSize;
+            _gameFactory.CreateTile(typeId, new Vector2(x + 0.5f, y + 0.5f), chunkCoord, _chunks[chunkCoord].transform);
+        }
 
         private BlockTypeId SwitchBlockType(int y, float height) {
             BlockTypeId typeId;
