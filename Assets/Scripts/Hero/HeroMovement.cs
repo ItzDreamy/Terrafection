@@ -29,17 +29,15 @@ namespace Hero {
         }
 
         private void FixedUpdate() {
-            if (_inputAxis.sqrMagnitude > 0.001f) {
-                Vector2 movement = new Vector2(_inputAxis.x * _movementSpeed, _rigidbody.velocity.y);
+            Vector2 movement = new Vector2(_inputAxis.x * _movementSpeed, _rigidbody.velocity.y);
 
-                if (IsJump(_inputAxis) && IsGrounded()) {
-                    movement.y = _jumpHeight;
-                }
-
-                _rigidbody.velocity = movement;
-
-                Flip();
+            if (IsJump(_inputAxis) && IsGrounded()) {
+                movement.y = _jumpHeight;
             }
+
+            _rigidbody.velocity = movement;
+
+            Flip();
         }
 
         private bool IsJump(Vector2 axis) =>
