@@ -1,6 +1,7 @@
 namespace StaticData.Generation {
     public enum BlockTypeId {
         Dirt,
-        Stone
+        Stone,
+        Grass
     }
 }

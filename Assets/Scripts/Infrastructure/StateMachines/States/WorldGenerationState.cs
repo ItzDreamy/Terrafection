@@ -28,10 +28,10 @@ namespace Infrastructure.StateMachines.States {
 
         public void Enter() {
             _seed = Random.Range(-10000, 10000);
-            
+
             CreateTerrainParent();
             GenerateNewIfNotExists();
-            
+
             _stateMachine.Enter<InitializationPlayerState>();
         }
 
@@ -42,13 +42,13 @@ namespace Infrastructure.StateMachines.States {
             if (_progressService.Progress.WorldData.Blocks != null) {
                 return;
             }
+
             GenerateTexture();
             GenerateTerrain();
         }
 
-        private void CreateTerrainParent() {
+        private void CreateTerrainParent() =>
             _terrainParent = _gameFactory.CreateWorldParent().transform;
-        }
 
         private void GenerateTexture() {
             _noiseTexture2D = new Texture2D(_config.WorldSize, _config.WorldSize);
@@ -66,16 +66,45 @@ namespace Infrastructure.StateMachines.States {
 
         private void GenerateTerrain() {
             for (int x = 0; x < _config.WorldSize; x++) {
-                float height =
-                    Mathf.PerlinNoise((x + _seed) * _config.TerrainFrequency, _seed * _config.TerrainFrequency) *
-                    _config.HeightMultiplier + _config.HeightAddition;
+                var height = CalculateHeight(x);
                 for (int y = 0; y < height; y++) {
-                    if (_noiseTexture2D.GetPixel(x, y).r > _config.SurfaceValue) {
-                        var position = new Vector2(x + 0.5f, y + 0.5f);
-                        var tile = _gameFactory.CreateTile(BlockTypeId.Dirt, position, _terrainParent);
+                    if (IsNotCave(x, y)) {
+                        CreateBlock(new Vector2(x + 0.5f, y + 0.5f), SwitchBlockType(y, height));
                     }
                 }
             }
         }
+
+        private void CreateBlock(Vector2 position, BlockTypeId typeId) =>
+            _gameFactory.CreateTile(typeId, position, _terrainParent);
+
+        private BlockTypeId SwitchBlockType(int y, float height) {
+            BlockTypeId typeId;
+
+            if (IsStone(y, height)) {
+                typeId = BlockTypeId.Stone;
+            }
+            else if (IsDirt(y, height)) {
+                typeId = BlockTypeId.Dirt;
+            }
+            else {
+                typeId = BlockTypeId.Grass;
+            }
+
+            return typeId;
+        }
+
+        private bool IsDirt(int y, float height) =>
+            y < height - 1;
+
+        private bool IsStone(int y, float height) =>
+            y < height - _config.DirtLayerHeight;
+
+        private bool IsNotCave(int x, int y) =>
+            _noiseTexture2D.GetPixel(x, y).r > _config.SurfaceValue;
+
+        private float CalculateHeight(int x) =>
+            Mathf.PerlinNoise((x + _seed) * _config.TerrainFrequency, _seed * _config.TerrainFrequency) *
+            _config.HeightMultiplier + _config.HeightAddition;
     }
 }

@@ -9,5 +9,7 @@ namespace StaticData.Configs {
         [Range(0f, 1f)] public float TerrainFrequency;
         [Range(0f, 100f)] public float HeightMultiplier;
         [Range(0f, 100f)] public int HeightAddition;
+        [Range(0f, 100f)] public int DirtLayerHeight;
+        public int ChunkSize;
     }
 }

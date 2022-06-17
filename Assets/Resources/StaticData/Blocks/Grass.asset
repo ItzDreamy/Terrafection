@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14ab8f3dc2cc412ea45b0a3e77697e6a, type: 3}
-  m_Name: GenerationConfig
+  m_Script: {fileID: 11500000, guid: e032f14b82ca445396ac885a77c50ff1, type: 3}
+  m_Name: Grass
   m_EditorClassIdentifier: 
-  SurfaceValue: 0.225
-  WorldSize: 100
-  CaveFrequency: 0.08
-  TerrainFrequency: 0.04
-  HeightMultiplier: 25
-  HeightAddition: 25
-  DirtLayerHeight: 6
-  ChunkSize: 16
+  BlockTypeId: 2
+  BlockPrefab: {fileID: 9216457964870666327, guid: 9bf982af4a751d54983e4164911ea048, type: 3}
