@@ -15,7 +15,6 @@ namespace Infrastructure.Factory {
         GameObject CreateWorldParent();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
-        List<Chunk> Chunks { get; }
         void Cleanup();
     }
 }

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ab8f3dc2cc412ea45b0a3e77697e6a, type: 3}
   m_Name: GenerationConfig
   m_EditorClassIdentifier: 
-  SurfaceValue: 0.225
+  SurfaceValue: 0.25
   WorldSize: 500
-  CaveFrequency: 0.08
+  CaveFrequency: 0.1
   TerrainFrequency: 0.04
   HeightMultiplier: 25
   HeightAddition: 25

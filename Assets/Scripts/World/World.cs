@@ -37,7 +37,23 @@ namespace World {
 
         public void UpdateProgress(PlayerProgress progress) {
             progress.WorldData.Chunks = new List<Chunk>();
-            foreach (var chunk in _gameFactory.Chunks) {
+
+            foreach (Transform chunkTransform in transform) {
+                Chunk chunk = new Chunk {
+                    Blocks = new List<BlockSaveData>()
+                };
+
+                foreach (Transform blockTransform in chunkTransform) {
+                    if (blockTransform.TryGetComponent(out Block block)) {
+                        BlockSaveData blockSaveData = new BlockSaveData {
+                            Position = blockTransform.position.AsVectorData(),
+                            TypeId = block.Data.BlockTypeId
+                        };
+
+                        chunk.Blocks.Add(blockSaveData);
+                    }
+                }
+
                 progress.WorldData.Chunks.Add(chunk);
             }
 

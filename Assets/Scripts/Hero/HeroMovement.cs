@@ -40,12 +40,6 @@ namespace Hero {
             Flip();
         }
 
-        private bool IsJump(Vector2 axis) =>
-            axis.y > 0.1f;
-
-        private void Flip() =>
-            transform.localScale = _inputAxis.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
-
         private void OnApplicationQuit() {
             _saveLoadService.SaveProgress("Main");
         }
@@ -63,6 +57,12 @@ namespace Hero {
                 Warp(savedPosition);
             }
         }
+
+        private bool IsJump(Vector2 axis) =>
+            axis.y > 0.1f;
+
+        private void Flip() =>
+            transform.localScale = _inputAxis.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 
         private bool IsGrounded() =>
             Physics2D.OverlapCircle(_groundChecker.position, 0.15f, _groundLayer) != null;

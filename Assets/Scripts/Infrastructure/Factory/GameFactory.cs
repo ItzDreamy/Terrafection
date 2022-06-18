@@ -11,8 +11,6 @@ namespace Infrastructure.Factory {
     public class GameFactory : IGameFactory {
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
-        public List<Chunk> Chunks { get; } = new List<Chunk>();
-
         private readonly IAssetProvider _assets;
         private readonly IBlocksDataProvider _blocksDataProvider;
 
@@ -41,9 +39,6 @@ namespace Infrastructure.Factory {
                     parent = parent
                 }
             };
-            Chunks.Add(new Chunk {
-                Blocks = new List<Block>(blocksCount)
-            });
 
             return newChunk;
         }
@@ -54,27 +49,22 @@ namespace Infrastructure.Factory {
                     parent = parent
                 }
             };
-            Chunks.Add(new Chunk {
-                Blocks = new List<Block>()
-            });
 
             return newChunk;
         }
 
         public GameObject CreateTile(BlockTypeId typeId, Vector3 at, int chunkIndex, Transform parent) {
             BlockData blockData = _blocksDataProvider.GetBlockData(typeId);
-            var block = new Block {
+            var block = new BlockSaveData {
                 Position = at.AsVectorData(),
                 TypeId = typeId
             };
-            Chunks[chunkIndex].Blocks.Add(block);
             return Object.Instantiate(blockData.BlockPrefab, at, Quaternion.identity, parent);
         }
 
         public void Cleanup() {
             ProgressReaders.Clear();
             ProgressWriters.Clear();
-            Chunks.Clear();
         }
 
         private GameObject InstantiateRegistered(Vector2 at, string prefabPath) {
