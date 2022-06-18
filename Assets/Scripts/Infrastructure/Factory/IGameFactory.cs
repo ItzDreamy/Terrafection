@@ -11,10 +11,10 @@ namespace Infrastructure.Factory {
         void CreateHud();
         GameObject CreateTile(BlockTypeId typeId, Vector3 at, int chunkIndex, Transform parent);
         GameObject CreateChunk(int index, Transform parent);
-        GameObject CreateChunk(int index, int blocksCount, Transform parent);
         GameObject CreateWorldParent();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
+        public GameObject WorldParent { get; }
         void Cleanup();
     }
 }

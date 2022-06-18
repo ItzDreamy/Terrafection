@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: GenerationConfig
   m_EditorClassIdentifier: 
   SurfaceValue: 0.25
-  WorldSize: 500
+  WorldSize: 1000
   CaveFrequency: 0.1
   TerrainFrequency: 0.04
-  HeightMultiplier: 25
+  HeightMultiplier: 50
   HeightAddition: 25
   DirtLayerHeight: 6
   ChunkSize: 16

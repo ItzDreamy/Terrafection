@@ -8,7 +8,7 @@ using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 
 namespace World {
-    public class World : MonoBehaviour, ISavedProgress {
+    public class Terrain : MonoBehaviour, ISavedProgress {
         private IGameFactory _gameFactory;
 
         private void Awake() {
@@ -17,15 +17,16 @@ namespace World {
 
         public void LoadProgress(PlayerProgress progress) {
             var chunks = progress.WorldData.Chunks;
-            if (chunks == null) {
+            if (chunks == null || chunks.Count == 0) {
                 return;
             }
 
             for (var i = 0; i < chunks.Count; i++) {
-                var newChunk = _gameFactory.CreateChunk(i, chunks[i].Blocks.Count, transform);
+                var newChunk = _gameFactory.CreateChunk(i, transform);
                 Transform chunkTransform = newChunk.transform;
+                Chunk chunk = chunks[i];
 
-                foreach (var block in chunks[i].Blocks) {
+                foreach (var block in chunk.Blocks) {
                     _gameFactory
                         .CreateTile(block.TypeId, block.Position.AsUnityVector(), i, chunkTransform);
                 }

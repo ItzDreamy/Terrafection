@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Factory;
-using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.WorldGeneration;
 using StaticData.Configs;
 using StaticData.Generation;
@@ -10,7 +9,6 @@ namespace Infrastructure.StateMachines.States {
         private readonly GameStateMachine _stateMachine;
         private readonly IGameFactory _gameFactory;
         private readonly IWorldConfigProvider _configProvider;
-        private readonly IPersistantProgressService _progressService;
         private readonly WorldConfig _config;
         private Transform _terrainParent;
 
@@ -21,11 +19,10 @@ namespace Infrastructure.StateMachines.States {
         private Vector2 _spawnPosition;
 
         public WorldGenerationState(GameStateMachine stateMachine, IGameFactory gameFactory,
-            IWorldConfigProvider configProvider, IPersistantProgressService progressService) {
+            IWorldConfigProvider configProvider) {
             _stateMachine = stateMachine;
             _gameFactory = gameFactory;
             _configProvider = configProvider;
-            _progressService = progressService;
             _config = _configProvider.Config;
         }
 
@@ -33,10 +30,8 @@ namespace Infrastructure.StateMachines.States {
             _seed = Random.Range(-10000, 10000);
 
             _terrainParent = CreateTerrainParent();
-            if (_progressService.Progress.WorldData.Chunks == null) {
-                GenerateNewWorld();
-            }
-            
+            GenerateNewWorld();
+
             _stateMachine.Enter<InitializationPlayerState, Vector2>(_spawnPosition);
         }
 
@@ -71,7 +66,7 @@ namespace Infrastructure.StateMachines.States {
                 var height = CalculateHeight(x);
 
                 if (x == _config.WorldSize / 2) {
-                    _spawnPosition = new Vector2(x, height + 1);
+                    _spawnPosition = new Vector2(x, height + 2);
                 }
 
                 for (int y = 0; y < height; y++) {

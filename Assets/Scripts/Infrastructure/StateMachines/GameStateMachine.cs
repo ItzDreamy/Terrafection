@@ -19,7 +19,7 @@ namespace Infrastructure.StateMachines {
                 [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistantProgressService>(),
                     services.Single<ISaveLoadService>()),
                 [typeof(WorldGenerationState)] = new WorldGenerationState(this, services.Single<IGameFactory>(),
-                    services.Single<IWorldConfigProvider>(), services.Single<IPersistantProgressService>()),
+                    services.Single<IWorldConfigProvider>()),
                 [typeof(InitializationPlayerState)] = new InitializationPlayerState(this,
                     services.Single<IGameFactory>(), services.Single<IPersistantProgressService>()),
                 [typeof(GameLoopState)] = new GameLoopState(this)

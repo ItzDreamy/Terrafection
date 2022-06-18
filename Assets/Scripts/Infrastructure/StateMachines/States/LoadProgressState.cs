@@ -1,9 +1,10 @@
 ﻿using Data.Player;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
+using UnityEngine;
 
 namespace Infrastructure.StateMachines.States {
-    public class LoadProgressState : IState {
+    public class LoadProgressState : IPayloadedState<string> {
         private readonly GameStateMachine _stateMachine;
         private readonly IPersistantProgressService _progressService;
         private readonly ISaveLoadService _saveLoadService;
@@ -18,17 +19,22 @@ namespace Infrastructure.StateMachines.States {
         public void Exit() {
         }
 
-        public void Enter() {
-            LoadProgressOrInitNew();
-            _stateMachine.Enter<WorldGenerationState>();
+        public void Enter(string worldName) {
+            LoadProgressOrInitNew(worldName);
+
+            if (_progressService.Progress.WorldData.Chunks == null) {
+                _stateMachine.Enter<WorldGenerationState>();
+                return;
+            }
+            _stateMachine.Enter<InitializationPlayerState, Vector2>(Vector2.zero);
         }
 
-        private void LoadProgressOrInitNew() {
-            _progressService.Progress = _saveLoadService.LoadProgress("Main") ?? NewProgress();
+        private void LoadProgressOrInitNew(string worldName) {
+            _progressService.Progress = _saveLoadService.LoadProgress(worldName) ?? NewProgress(worldName);
         }
 
-        private PlayerProgress NewProgress() {
-            return new PlayerProgress("Main");
+        private PlayerProgress NewProgress(string worldName) {
+            return new PlayerProgress(worldName);
         }
     }
 }

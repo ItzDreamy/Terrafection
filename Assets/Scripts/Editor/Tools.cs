@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Editor {
-    public class Tools {
+    public static class Tools {
         [MenuItem("Tools/ClearPlayerPrefs")]
         public static void ClearPrefs() {
             PlayerPrefs.DeleteAll();

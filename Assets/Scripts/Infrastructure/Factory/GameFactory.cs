@@ -11,8 +11,10 @@ namespace Infrastructure.Factory {
     public class GameFactory : IGameFactory {
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
+        public GameObject WorldParent { get; private set; }
         private readonly IAssetProvider _assets;
         private readonly IBlocksDataProvider _blocksDataProvider;
+
 
         public GameFactory(IAssetProvider assets, IBlocksDataProvider blocksDataProvider) {
             _assets = assets;
@@ -21,37 +23,24 @@ namespace Infrastructure.Factory {
 
         public GameObject CreateWorldParent() {
             var obj = new GameObject(name: "Terrain");
-            obj.AddComponent<World.World>();
+            obj.AddComponent<World.Terrain>();
             RegisterProgressWatchers(obj);
+            WorldParent = obj;
             return obj;
         }
 
         public GameObject CreateHero(Vector2 at) =>
             InstantiateRegistered(at, AssetPath.HeroPath);
 
-        public void CreateHud() {
+        public void CreateHud() =>
             InstantiateRegistered(AssetPath.HudPath);
-        }
 
-        public GameObject CreateChunk(int index, int blocksCount, Transform parent) {
-            GameObject newChunk = new GameObject(name: index.ToString()) {
+        public GameObject CreateChunk(int index, Transform parent) =>
+            new(name: index.ToString()) {
                 transform = {
                     parent = parent
                 }
             };
-
-            return newChunk;
-        }
-
-        public GameObject CreateChunk(int index, Transform parent) {
-            GameObject newChunk = new GameObject(name: index.ToString()) {
-                transform = {
-                    parent = parent
-                }
-            };
-
-            return newChunk;
-        }
 
         public GameObject CreateTile(BlockTypeId typeId, Vector3 at, int chunkIndex, Transform parent) {
             BlockData blockData = _blocksDataProvider.GetBlockData(typeId);

@@ -32,6 +32,7 @@ namespace Infrastructure.StateMachines.States {
         }
 
         private void InitGameWorld(Vector2 spawnPosition) {
+            if (_gameFactory.WorldParent == null) _gameFactory.CreateWorldParent();
             GameObject hero = SpawnPlayer(spawnPosition);
             CameraFollow(hero);
             InitHud(hero);

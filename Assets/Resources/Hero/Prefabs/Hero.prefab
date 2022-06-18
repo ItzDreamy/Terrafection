@@ -168,8 +168,8 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _jumpHeight: 8
-  _movementSpeed: 6
+  _jumpHeight: 10.5
+  _movementSpeed: 5
 --- !u!70 &6276882233187235628
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -198,10 +198,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10000
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
