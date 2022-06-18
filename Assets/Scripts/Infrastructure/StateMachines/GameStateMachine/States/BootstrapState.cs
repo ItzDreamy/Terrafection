@@ -7,7 +7,7 @@ using Infrastructure.Services.SaveLoad;
 using Infrastructure.Services.WorldGeneration;
 using UnityEngine.Device;
 
-namespace Infrastructure.StateMachines.States {
+namespace Infrastructure.StateMachines.GameStateMachine.States {
     public class BootstrapState : IState {
         private const string Boot = "Boot";
         private readonly SceneLoader _sceneLoader;

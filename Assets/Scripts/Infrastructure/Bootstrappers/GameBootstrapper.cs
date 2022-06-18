@@ -1,4 +1,4 @@
-﻿using Infrastructure.StateMachines.States;
+﻿using Infrastructure.StateMachines.GameStateMachine.States;
 using UnityEngine;
 
 namespace Infrastructure.Bootstrappers {

@@ -4,7 +4,7 @@ using StaticData.Configs;
 using StaticData.Generation;
 using UnityEngine;
 
-namespace Infrastructure.StateMachines.States {
+namespace Infrastructure.StateMachines.GameStateMachine.States {
     public class WorldGenerationState : IState {
         private readonly GameStateMachine _stateMachine;
         private readonly IGameFactory _gameFactory;
@@ -93,13 +93,13 @@ namespace Infrastructure.StateMachines.States {
             _gameFactory.CreateTile(typeId, new Vector2(x + 0.5f, y + 0.5f), chunkCoord, _chunks[chunkCoord].transform);
         }
 
-        private BlockTypeId SwitchBlockType(int y, float height) {
+        private BlockTypeId SwitchBlockType(int currentHeight, float maxHeight) {
             BlockTypeId typeId;
 
-            if (IsStone(y, height)) {
+            if (IsStone(currentHeight, maxHeight)) {
                 typeId = BlockTypeId.Stone;
             }
-            else if (IsDirt(y, height)) {
+            else if (IsDirt(currentHeight, maxHeight)) {
                 typeId = BlockTypeId.Dirt;
             }
             else {

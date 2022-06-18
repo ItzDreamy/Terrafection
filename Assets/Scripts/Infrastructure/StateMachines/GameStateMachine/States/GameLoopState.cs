@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.StateMachines.States {
+﻿namespace Infrastructure.StateMachines.GameStateMachine.States {
     public class GameLoopState : IState {
         private readonly GameStateMachine _stateMachine;
 

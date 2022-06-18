@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Factory;
 
-namespace Infrastructure.StateMachines.States {
+namespace Infrastructure.StateMachines.GameStateMachine.States {
     public class LoadLevelState : IPayloadedState<string> {
         private readonly IGameFactory _gameFactory;
         private readonly SceneLoader _sceneLoader;

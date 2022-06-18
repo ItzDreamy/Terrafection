@@ -3,7 +3,7 @@ using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using UnityEngine;
 
-namespace Infrastructure.StateMachines.States {
+namespace Infrastructure.StateMachines.GameStateMachine.States {
     public class LoadProgressState : IPayloadedState<string> {
         private readonly GameStateMachine _stateMachine;
         private readonly IPersistantProgressService _progressService;

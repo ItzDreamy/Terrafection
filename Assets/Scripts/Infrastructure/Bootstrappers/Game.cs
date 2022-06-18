@@ -1,5 +1,5 @@
 using Infrastructure.Services;
-using Infrastructure.StateMachines;
+using Infrastructure.StateMachines.GameStateMachine;
 
 namespace Infrastructure.Bootstrappers {
     public class Game {

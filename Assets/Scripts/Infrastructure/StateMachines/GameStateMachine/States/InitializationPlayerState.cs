@@ -3,7 +3,7 @@ using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 
-namespace Infrastructure.StateMachines.States {
+namespace Infrastructure.StateMachines.GameStateMachine.States {
     public class InitializationPlayerState : IPayloadedState<Vector2> {
         private readonly GameStateMachine _gameStateMachine;
         private readonly IGameFactory _gameFactory;
