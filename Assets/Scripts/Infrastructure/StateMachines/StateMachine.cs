@@ -7,13 +7,17 @@ namespace Infrastructure.StateMachines {
         private IExitableState _activeState;
 
         public void Enter<TState>() where TState : class, IState {
-            IState state = ChangeState<TState>();
-            state.Enter();
+            if (_activeState is not TState) {
+                IState state = ChangeState<TState>();
+                state.Enter();
+            }
         }
 
         public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload> {
-            var state = ChangeState<TState>();
-            state.Enter(payload);
+            if (_activeState is not TState) {
+                var state = ChangeState<TState>();
+                state.Enter(payload);
+            }
         }
 
         private TState GetState<TState>() where TState : class, IExitableState {

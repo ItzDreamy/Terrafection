@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
+using Infrastructure.StateMachines.PlayerStateMachine.States;
 using UnityEngine;
 
 namespace Hero {
@@ -14,6 +15,7 @@ namespace Hero {
         [SerializeField] private LayerMask _groundLayer;
         [SerializeField] private float _jumpHeight;
         [SerializeField] private float _movementSpeed;
+        [SerializeField] private HeroAnimator _heroAnimator;
 
         private IInputService _inputService;
         private ISaveLoadService _saveLoadService;
@@ -26,6 +28,21 @@ namespace Hero {
 
         private void Update() {
             _inputAxis = _inputService.Axis;
+            
+            if (IsMoving()) {
+                Idle();
+            }
+            else {
+                Movement();
+            }
+        }
+
+        private void Movement() {
+            _heroAnimator.PlayerStateMachine.Enter<MoveState>();
+        }
+
+        private void Idle() {
+            _heroAnimator.PlayerStateMachine.Enter<IdleState>();
         }
 
         private void FixedUpdate() {
@@ -36,8 +53,11 @@ namespace Hero {
             }
 
             _rigidbody.velocity = movement;
-
             Flip();
+        }
+
+        private bool IsMoving() {
+            return _inputAxis.x == 0;
         }
 
         private void OnApplicationQuit() {
