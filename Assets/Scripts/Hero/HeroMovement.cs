@@ -28,13 +28,8 @@ namespace Hero {
 
         private void Update() {
             _inputAxis = _inputService.Axis;
-            
-            if (IsMoving()) {
-                Idle();
-            }
-            else {
-                Movement();
-            }
+            if (IsMoving()) Movement();
+            else Idle();
         }
 
         private void Movement() {
@@ -57,7 +52,7 @@ namespace Hero {
         }
 
         private bool IsMoving() {
-            return _inputAxis.x == 0;
+            return _inputAxis.sqrMagnitude != 0;
         }
 
         private void OnApplicationQuit() {
