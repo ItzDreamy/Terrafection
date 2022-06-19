@@ -4,28 +4,30 @@ using UnityEngine;
 
 namespace Infrastructure.StateMachines.PlayerStateMachine.States {
     public class MoveState : IState {
-        private readonly PlayerStateMachine _stateMachine;
-        private readonly Animator _animator;
+        private readonly MovementStateMachine _stateMachine;
+        private readonly HeroAnimator _animator;
         private readonly IInputService _inputService;
         private readonly Rigidbody2D _rigidbody2D;
         private readonly Transform _groundChecker;
         private readonly LayerMask _groundLayer;
 
-        public MoveState(PlayerStateMachine stateMachine, HeroAnimator animator, IInputService inputService,
+        public MoveState(MovementStateMachine stateMachine, HeroAnimator animator, IInputService inputService,
             Rigidbody2D rigidbody2D, Transform groundChecker, LayerMask groundLayer) {
             _stateMachine = stateMachine;
-            _animator = animator.Animator;
+            _animator = animator;
             _inputService = inputService;
             _rigidbody2D = rigidbody2D;
             _groundChecker = groundChecker;
             _groundLayer = groundLayer;
         }
 
-        public void Enter() =>
-            _animator.SetBool(PlayerAnimatorHashes.MoveHash, true);
+        public void Enter() {
+            Debug.Log("Moving");
+            _animator.SetAnimatorBool(PlayerAnimatorHashes.MoveHash, true);
+        }
 
         public void Exit() =>
-            _animator.SetBool(PlayerAnimatorHashes.MoveHash, false);
+            _animator.SetAnimatorBool(PlayerAnimatorHashes.MoveHash, false);
 
         public void LogicUpdate() {
             if (_inputService.Axis.y != 0 && IsGrounded()) {

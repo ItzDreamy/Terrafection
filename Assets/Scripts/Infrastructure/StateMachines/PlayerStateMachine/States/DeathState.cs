@@ -3,24 +3,21 @@ using UnityEngine;
 
 namespace Infrastructure.StateMachines.PlayerStateMachine.States {
     public class DeathState : IState {
-        private readonly PlayerStateMachine _stateMachine;
-        private readonly Animator _animator;
+        private readonly MovementStateMachine _stateMachine;
+        private readonly HeroAnimator _animator;
 
-        public DeathState(PlayerStateMachine stateMachine, HeroAnimator animator) {
+        public DeathState(MovementStateMachine stateMachine, HeroAnimator animator) {
             _stateMachine = stateMachine;
-            _animator = animator.Animator;
+            _animator = animator;
         }
 
         public void Enter() =>
-            _animator.SetBool(PlayerAnimatorHashes.DieHash, true);
+            _animator.PlayAnimation(PlayerAnimatorHashes.DieHash);
 
-        public void Exit() =>
-            _animator.SetBool(PlayerAnimatorHashes.DieHash, false);
+        public void Exit() { }
 
-        public void LogicUpdate() {
-        }
+        public void LogicUpdate() { }
 
-        public void PhysicsUpdate() {
-        }
+        public void PhysicsUpdate() { }
     }
 }

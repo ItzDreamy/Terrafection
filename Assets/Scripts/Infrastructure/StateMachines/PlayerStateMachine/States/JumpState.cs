@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Infrastructure.StateMachines.PlayerStateMachine.States {
     public class JumpState : IState {
-        private readonly PlayerStateMachine _stateMachine;
+        private readonly MovementStateMachine _stateMachine;
         private readonly HeroAnimator _animator;
         private readonly IInputService _inputService;
         private readonly Rigidbody2D _rigidbody2D;
 
-        public JumpState(PlayerStateMachine stateMachine, HeroAnimator animator, IInputService inputService,
+        public JumpState(MovementStateMachine stateMachine, HeroAnimator animator, IInputService inputService,
             Rigidbody2D rigidbody2D) {
             _stateMachine = stateMachine;
             _animator = animator;
@@ -36,6 +36,7 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
         }
 
         public void Enter() {
+            Debug.Log("Jumping");
         }
     }
 }

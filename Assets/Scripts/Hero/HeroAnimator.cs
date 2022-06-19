@@ -3,9 +3,11 @@
 namespace Hero {
     public class HeroAnimator : MonoBehaviour {
         [SerializeField] private Animator _animator;
-        public Animator Animator => _animator;
 
-        private void Awake() {
-        }
+        public void SetAnimatorBool(int animationHash, bool value) =>
+            _animator.SetBool(animationHash, value);
+
+        public void PlayAnimation(int animationHash) =>
+            _animator.Play(animationHash);
     }
 }

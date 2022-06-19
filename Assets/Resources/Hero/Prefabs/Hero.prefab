@@ -125,9 +125,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8387988124540902155}
   - component: {fileID: -2840518934178295714}
+  - component: {fileID: 8685046281825204507}
   - component: {fileID: 6276882233187235628}
   - component: {fileID: 529093452816366444}
-  - component: {fileID: 592486175259487768}
   - component: {fileID: 2861760968096831407}
   m_Layer: 0
   m_Name: Hero
@@ -172,7 +172,20 @@ MonoBehaviour:
     m_Bits: 1024
   _jumpHeight: 10.5
   _movementSpeed: 5
-  _heroAnimator: {fileID: 592486175259487768}
+  _heroAnimator: {fileID: 8685046281825204507}
+--- !u!114 &8685046281825204507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387988124540902196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6faf625003e24aefbff21cecad78b94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 2861760968096831407}
 --- !u!70 &6276882233187235628
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -210,19 +223,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &592486175259487768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8387988124540902196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad280f89d05f48a69ebe6aea600ce180, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 2861760968096831407}
 --- !u!95 &2861760968096831407
 Animator:
   serializedVersion: 4

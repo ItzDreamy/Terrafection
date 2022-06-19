@@ -21,12 +21,12 @@ namespace Hero {
         private IInputService _inputService;
         private ISaveLoadService _saveLoadService;
         private Vector2 _inputAxis;
-        private PlayerStateMachine _stateMachine;
+        private MovementStateMachine _stateMachine;
 
         private void Awake() {
             _inputService = AllServices.Container.Single<IInputService>();
             _saveLoadService = AllServices.Container.Single<ISaveLoadService>();
-            _stateMachine = new PlayerStateMachine(_heroAnimator, _rigidbody, _groundChecker, _groundLayer);
+            _stateMachine = new MovementStateMachine(_heroAnimator, _rigidbody, _groundChecker, _groundLayer);
 
             _stateMachine.Enter<IdleState>();
         }
