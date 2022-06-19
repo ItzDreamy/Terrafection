@@ -9,6 +9,13 @@
         public void Exit() {
         }
 
+        public void LogicUpdate() {
+        }
+
+        public void PhysicsUpdate() {
+            
+        }
+
         public void Enter() {
         }
     }

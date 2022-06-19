@@ -29,6 +29,13 @@ namespace Infrastructure.StateMachines.GameStateMachine.States {
         public void Exit() {
         }
 
+        public void LogicUpdate() {
+        }
+
+        public void PhysicsUpdate() {
+            
+        }
+
         private void EnterLoadLevel() {
             _stateMachine.Enter<LoadLevelState, string>("Main");
         }

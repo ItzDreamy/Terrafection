@@ -1,3 +1,4 @@
+using Hero;
 using UnityEngine;
 
 namespace Infrastructure.StateMachines.PlayerStateMachine.States {
@@ -5,9 +6,9 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
         private readonly PlayerStateMachine _stateMachine;
         private readonly Animator _animator;
 
-        public DeathState(PlayerStateMachine stateMachine, Animator animator) {
+        public DeathState(PlayerStateMachine stateMachine, HeroAnimator animator) {
             _stateMachine = stateMachine;
-            _animator = animator;
+            _animator = animator.Animator;
         }
 
         public void Enter() =>
@@ -15,5 +16,11 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
 
         public void Exit() =>
             _animator.SetBool(PlayerAnimatorHashes.DieHash, false);
+
+        public void LogicUpdate() {
+        }
+
+        public void PhysicsUpdate() {
+        }
     }
 }

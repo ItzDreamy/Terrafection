@@ -25,6 +25,14 @@ namespace Infrastructure.StateMachines.GameStateMachine.States {
         public void Exit() {
         }
 
+        public void LogicUpdate() {
+            
+        }
+
+        public void PhysicsUpdate() {
+            
+        }
+
         private void InformProgressReaders() {
             foreach (ISavedProgressReader reader in _gameFactory.ProgressReaders) {
                 reader.LoadProgress(_progressService.Progress);

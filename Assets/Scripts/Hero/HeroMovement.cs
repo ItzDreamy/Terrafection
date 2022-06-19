@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
+using Infrastructure.StateMachines.PlayerStateMachine;
 using Infrastructure.StateMachines.PlayerStateMachine.States;
 using UnityEngine;
 
@@ -20,39 +21,24 @@ namespace Hero {
         private IInputService _inputService;
         private ISaveLoadService _saveLoadService;
         private Vector2 _inputAxis;
+        private PlayerStateMachine _stateMachine;
 
         private void Awake() {
             _inputService = AllServices.Container.Single<IInputService>();
             _saveLoadService = AllServices.Container.Single<ISaveLoadService>();
+            _stateMachine = new PlayerStateMachine(_heroAnimator, _rigidbody, _groundChecker, _groundLayer);
+
+            _stateMachine.Enter<IdleState>();
         }
 
         private void Update() {
             _inputAxis = _inputService.Axis;
-            if (IsMoving()) Movement();
-            else Idle();
-        }
-
-        private void Movement() {
-            _heroAnimator.PlayerStateMachine.Enter<MoveState>();
-        }
-
-        private void Idle() {
-            _heroAnimator.PlayerStateMachine.Enter<IdleState>();
+            _stateMachine.LogicUpdate();
         }
 
         private void FixedUpdate() {
-            Vector2 movement = new Vector2(_inputAxis.x * _movementSpeed, _rigidbody.velocity.y);
-
-            if (IsJump(_inputAxis) && IsGrounded()) {
-                movement.y = _jumpHeight;
-            }
-
-            _rigidbody.velocity = movement;
+            _stateMachine.PhysicsUpdate();
             Flip();
-        }
-
-        private bool IsMoving() {
-            return _inputAxis.sqrMagnitude != 0;
         }
 
         private void OnApplicationQuit() {
@@ -73,14 +59,8 @@ namespace Hero {
             }
         }
 
-        private bool IsJump(Vector2 axis) =>
-            axis.y > 0.1f;
-
         private void Flip() =>
             transform.localScale = _inputAxis.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
-
-        private bool IsGrounded() =>
-            Physics2D.OverlapCircle(_groundChecker.position, 0.15f, _groundLayer) != null;
 
         private void Warp(Vector3Data savedPosition) =>
             transform.position = savedPosition.AsUnityVector();
