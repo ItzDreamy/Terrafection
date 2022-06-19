@@ -11,9 +11,9 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
         }
 
         public void Enter() =>
-            _animator.SetTrigger(PlayerAnimatorHashes.IdleHash);
+            _animator.SetBool(PlayerAnimatorHashes.IdleHash, true);
 
         public void Exit() =>
-            _animator.ResetTrigger(PlayerAnimatorHashes.IdleHash);
+            _animator.SetBool(PlayerAnimatorHashes.IdleHash, true);
     }
 }

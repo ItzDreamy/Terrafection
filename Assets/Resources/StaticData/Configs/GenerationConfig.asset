@@ -16,7 +16,7 @@ MonoBehaviour:
   WorldSize: 1000
   CaveFrequency: 0.1
   TerrainFrequency: 0.04
-  HeightMultiplier: 50
-  HeightAddition: 25
+  HeightMultiplier: 25
+  HeightAddition: 10
   DirtLayerHeight: 6
   ChunkSize: 16
