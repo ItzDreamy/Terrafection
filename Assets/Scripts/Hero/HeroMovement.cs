@@ -14,53 +14,45 @@ namespace Hero {
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private Transform _groundChecker;
         [SerializeField] private LayerMask _groundLayer;
-        [SerializeField] private float _jumpHeight;
-        [SerializeField] private float _movementSpeed;
         [SerializeField] private HeroAnimator _heroAnimator;
 
-        private IInputService _inputService;
         private ISaveLoadService _saveLoadService;
-        private Vector2 _inputAxis;
         private MovementStateMachine _stateMachine;
+        private PlayerProgress _progress;
 
         private void Awake() {
-            _inputService = AllServices.Container.Single<IInputService>();
             _saveLoadService = AllServices.Container.Single<ISaveLoadService>();
-            _stateMachine = new MovementStateMachine(_heroAnimator, _rigidbody, _groundChecker, _groundLayer);
-
-            _stateMachine.Enter<IdleState>();
         }
 
         private void Update() {
-            _inputAxis = _inputService.Axis;
             _stateMachine.LogicUpdate();
         }
 
-        private void FixedUpdate() {
-            _stateMachine.PhysicsUpdate();
-            Flip();
-        }
+        private void FixedUpdate() => _stateMachine.PhysicsUpdate();
 
-        private void OnApplicationQuit() {
-            _saveLoadService.SaveProgress("Main");
-        }
+        private void OnApplicationQuit() => _saveLoadService.SaveProgress("Main");
 
         public void UpdateProgress(PlayerProgress progress) {
-            progress.WorldData.PositionOnLevel =
-                new PositionOnLevel(transform.position.AsVectorData());
+            progress.Position =
+                transform.position.AsVectorData();
 
             Debug.Log("Player position saved.");
         }
 
         public void LoadProgress(PlayerProgress progress) {
-            Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
+            _progress = progress;
+            Vector3Data savedPosition = progress.Position;
             if (savedPosition != null && !(savedPosition.X == 0 && savedPosition.Y == 0)) {
                 Warp(savedPosition);
             }
+            
+            InitializeStateMachine();
         }
 
-        private void Flip() =>
-            transform.localScale = _inputAxis.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+        private void InitializeStateMachine() {
+            _stateMachine = new MovementStateMachine(_heroAnimator, _rigidbody, _groundChecker, _groundLayer, _progress.Stats);
+            _stateMachine.Enter<IdleState>();
+        }
 
         private void Warp(Vector3Data savedPosition) =>
             transform.position = savedPosition.AsUnityVector();

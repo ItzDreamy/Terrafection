@@ -10,15 +10,17 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
         private readonly Rigidbody2D _rigidbody2D;
         private readonly Transform _groundChecker;
         private readonly LayerMask _groundLayer;
+        private readonly float _speed;
 
         public MoveState(MovementStateMachine stateMachine, HeroAnimator animator, IInputService inputService,
-            Rigidbody2D rigidbody2D, Transform groundChecker, LayerMask groundLayer) {
+            Rigidbody2D rigidbody2D, Transform groundChecker, LayerMask groundLayer, float speed) {
             _stateMachine = stateMachine;
             _animator = animator;
             _inputService = inputService;
             _rigidbody2D = rigidbody2D;
             _groundChecker = groundChecker;
             _groundLayer = groundLayer;
+            _speed = speed;
         }
 
         public void Enter() {
@@ -28,6 +30,13 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
 
         public void Exit() =>
             _animator.SetAnimatorBool(PlayerAnimatorHashes.MoveHash, false);
+
+        public void PhysicsUpdate() {
+            Vector2 inputAxis = _inputService.Axis;
+            Vector2 movement = new Vector2(inputAxis.x * _speed, _rigidbody2D.velocity.y);
+            _rigidbody2D.velocity = movement;
+            Flip();
+        }
 
         public void LogicUpdate() {
             if (_inputService.Axis.y != 0 && IsGrounded()) {
@@ -41,10 +50,7 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
         private bool IsGrounded() =>
             Physics2D.OverlapCircle(_groundChecker.position, 0.15f, _groundLayer) != null;
 
-        public void PhysicsUpdate() {
-            Vector2 inputAxis = _inputService.Axis;
-            Vector2 movement = new Vector2(inputAxis.x * 5, _rigidbody2D.velocity.y);
-            _rigidbody2D.velocity = movement;
-        }
+        private void Flip() =>
+            _rigidbody2D.transform.localScale = _inputService.Axis.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
     }
 }

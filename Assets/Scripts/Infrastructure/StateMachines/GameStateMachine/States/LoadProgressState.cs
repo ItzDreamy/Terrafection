@@ -42,7 +42,12 @@ namespace Infrastructure.StateMachines.GameStateMachine.States {
         }
 
         private PlayerProgress NewProgress(string worldName) {
-            return new PlayerProgress(worldName);
+            PlayerProgress progress = new PlayerProgress(worldName);
+            //TODO: Load default player values from config
+            progress.Stats.Speed = 5;
+            progress.Stats.JumpHeight = 10.5f;
+            
+            return progress;
         }
     }
 }

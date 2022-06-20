@@ -8,17 +8,18 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
         private readonly HeroAnimator _animator;
         private readonly IInputService _inputService;
         private readonly Rigidbody2D _rigidbody2D;
+        private readonly float _jumpHeight;
 
         public JumpState(MovementStateMachine stateMachine, HeroAnimator animator, IInputService inputService,
-            Rigidbody2D rigidbody2D) {
+            Rigidbody2D rigidbody2D, float jumpHeight) {
             _stateMachine = stateMachine;
             _animator = animator;
             _inputService = inputService;
             _rigidbody2D = rigidbody2D;
+            _jumpHeight = jumpHeight;
         }
 
-        public void Exit() {
-        }
+        public void Exit() { }
 
         public void LogicUpdate() {
             if (_inputService.Axis.x != 0) {
@@ -31,7 +32,7 @@ namespace Infrastructure.StateMachines.PlayerStateMachine.States {
 
         public void PhysicsUpdate() {
             Vector2 movement = _rigidbody2D.velocity;
-            movement.y = 11;
+            movement.y = _jumpHeight;
             _rigidbody2D.velocity = movement;
         }
 
